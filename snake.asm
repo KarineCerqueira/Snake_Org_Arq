@@ -15,15 +15,15 @@ posAtualTiro	: var #1 ; posição atual do tiro
 posAntTiro	: var #1 ; posição anterior do tiro
 
 ; tela de game over
-GameOverMessage: 	string " JA ERA "
+GameOverMessage: 	string " PERDEU MANE "
 EraseGameOver:		string "           "
-RestartMessage:		string " NAO DESISTA! APERTE 'SPACE' "
+RestartMessage:		string " APERTE 'SPACE' SE QUISER"
 EraseRestart:		string "                          "
 
 ; tela de passar de nível
-SuccessMessage: 		string " MITOOOOU "
+SuccessMessage: 		string " BOAAAA "
 EraseSuccessMessage: 	string "                 "
-NextLevelMessage: 		string " APERTE 'SPACE' A SAGA CONTINUA "
+NextLevelMessage: 		string " APERTE 'SPACE' SE QUISER "
 EraseNextLevelMessage:	string "                               "
 
 ; Main
@@ -134,7 +134,7 @@ inicialize_stage_number:
 
 inicialize_speed:
 	
-	loadn r0, #6000
+	loadn r0, #9000
 	store Speed, r0
 		 
 	rts
@@ -386,8 +386,9 @@ Move_Snake:
 	dec 	r0
 	store 	SnakeSize, r0
 	
-	loadn r0, #1158
-	store FoodPosN, r0
+	store FoodPosN, r1
+	loadn r0, #' '
+	outchar r0, r1
 	
 	Check_Food_Y:
 	load 	r0, FoodPosY ; posição da comida
@@ -401,8 +402,9 @@ Move_Snake:
 	inc 	r0 ; Diminui a velocidade 
 	store 	Speed, r0
 	
-	loadn r0, #1158
-	store FoodPosY, r0
+	store FoodPosY, r1
+	loadn r0, #' '
+	outchar r0, r1
 
 	Spread_Move:
     ; Limpa a posição anterior da cobra
@@ -752,8 +754,8 @@ Increment_score:
 	
 	outchar r0, r2
 	
-	loadn r3, #49 ;1
-	cmp r0, r3	;checa se o score chegou a 2 (50 em ASCII)
+	loadn r3, #49 ;
+	cmp r0, r3	;checa se o score chegou a 5 (53 em ASCII)
 	jeq NextLevel
 	
 	
@@ -854,6 +856,25 @@ Replace_Food:
 			store FoodPos, r1
 			loadn r0, #'*'
 			outchar r0, r1
+			
+			load r1, FoodPosY
+			loadn r0, #' '
+			outchar r0, r1
+			loadn r3, #5
+			add r1, r1, r3
+			store FoodPosY, r1 
+			loadn r0, #'Y'
+			outchar r0, r1
+			
+			load r1, FoodPosN
+			loadn r0, #' '
+			outchar r0, r1
+			loadn r3, #10
+			add r1, r1, r3
+			store FoodPosN, r1 
+			loadn r0, #'N'
+			outchar r0, r1
+			
 	
 	Replace_End:
 		pop r1
